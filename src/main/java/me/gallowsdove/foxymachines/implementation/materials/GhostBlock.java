@@ -27,7 +27,8 @@ public class GhostBlock extends SlimefunItem {
 
     public static final NamespacedKey KEY = new NamespacedKey(FoxyMachines.getInstance(), "ghost_block");
 
-
+    public static final Set<Material> EXCLUDED = Set.of();
+    
     @Nonnull
     private final Material material;
 
