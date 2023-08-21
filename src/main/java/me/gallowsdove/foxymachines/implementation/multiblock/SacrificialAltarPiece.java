@@ -1,11 +1,12 @@
 package me.gallowsdove.foxymachines.implementation.multiblock;
 
+import com.xzavier0722.mc.plugin.slimefun4.storage.util.StorageCacheUtils;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import me.gallowsdove.foxymachines.Items;
-import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -35,14 +36,14 @@ public class SacrificialAltarPiece extends SlimefunItem {
                 Block b = findAltar(e.getBlock());
 
                 if (b != null) {
-                    if (BlockStorage.getLocationInfo(b.getLocation(), "complete") != null &&
-                            BlockStorage.getLocationInfo(b.getLocation(), "complete").equals("true")) {
-                        BlockStorage.addBlockInfo(b, "complete", "false");
+                    if (StorageCacheUtils.getData(b.getLocation(), "complete") != null &&
+                            StorageCacheUtils.getData(b.getLocation(), "complete").equals("true")) {
+                        StorageCacheUtils.setData(b.getLocation(), "complete", "false");
                         e.getPlayer().sendMessage(ChatColor.LIGHT_PURPLE + "献祭祭坛不完整，请修复献祭祭坛后重新激活");
                     }
                 }
 
-                BlockStorage.clearBlockInfo(e.getBlock());
+                Slimefun.getDatabaseManager().getBlockDataController().removeBlock(e.getBlock().getLocation());
             }
         };
     }
@@ -58,8 +59,8 @@ public class SacrificialAltarPiece extends SlimefunItem {
 
                     Block block = b.getRelative(x, y, z);
 
-                    if (block.getType() == Material.POLISHED_BLACKSTONE_PRESSURE_PLATE && BlockStorage.getLocationInfo(block.getLocation(), "id") != null &&
-                            BlockStorage.getLocationInfo(block.getLocation(), "id").equals("SACRIFICIAL_ALTAR_BLACKSTONE_PRESSURE_PLATE")) {
+                    if (block.getType() == Material.POLISHED_BLACKSTONE_PRESSURE_PLATE && StorageCacheUtils.getData(block.getLocation(), "id") != null &&
+                            StorageCacheUtils.getData(block.getLocation(), "id").equals("SACRIFICIAL_ALTAR_BLACKSTONE_PRESSURE_PLATE")) {
                         return block;
                     }
                 }
